@@ -1,0 +1,17 @@
+//  --------------------------------------------------------------------------------
+//  Contains all style related to card component
+//  --------------------------------------------------------------------------------
+.modal {
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translate(-50%, -50%);
+  z-index: 1000; /* Sit on top */
+  color: #000;
+  font-size: 1.8rem;
+  font-weight: 700;
+  padding: 0.3rem 1rem;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  border: none;
+}

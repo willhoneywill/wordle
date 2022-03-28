@@ -1,0 +1,6 @@
+
+/dist
+/node_mdules
+package.json
+package-lock.json
+webpack.mix.js
