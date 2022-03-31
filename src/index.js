@@ -1,19 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
-import words from './data/words'
+import words from './data/words';
+import { Header } from './components/header';
+import { HowModal } from './components/howModal';
+
 
 function App() {
     return <Game />;
 }
 
 function Game() {
+    const [howModal, setHowModal] = useState('hide');
+    const showHowModal = () => {
+        setHowModal('');
+    }
+    const closeHowModal = () => {
+        setHowModal('hide');
+    }
+
     return (
         <div className="game">
-            <div className="game-header">
-                <h2>Wordle{/* status */}</h2>
-            </div>
+            <Header onClick={() => showHowModal()} />
             <Board />
+            <HowModal class={howModal} onClick={() => closeHowModal()} />
         </div>
     );
 }
@@ -21,6 +31,7 @@ function Game() {
 function Board () {
     const [letters, setLetters] = useState(Array(25).fill(null));
     const [tileClasses, setTileClasses] = useState(Array(25).fill(''));
+    const [keyClasses, setKeyClasses] = useState([]);
     const [currentRow, setCurrentRow] = useState(Array(5).fill(null));
     const [activeTile, setActiveTile] = useState(0);
     const [lastTile, setLastTile] = useState(0);
@@ -29,7 +40,7 @@ function Board () {
     const [showModal, setShowModal] = useState(null);
     const [modalMessage, setModalMessage] = useState('');
     const [wordList, setWordList] = useState(words);
-    const [answer, setAnswer] = useState('jakey');
+    const [answer, setAnswer] = useState('react');
     const [gameActive, setGameActive] = useState(true);
 
     const renderTile = (i) => {
@@ -42,10 +53,11 @@ function Board () {
     }
 
     const renderLetter = (letter) => {
+        keyClasses[letter] = '';
         return (
             <Letter
                 value={letter}
-                class={''}
+                class={keyClasses[letter]}
                 onClick={() => handleClick(letter)}
             />
         )
@@ -53,7 +65,7 @@ function Board () {
 
     const renderDelete = (letter) => {
         return (
-            <Letter
+            <DeleteKey
                 value={letter}
                 class={'big'}
                 onClick={() => deleteLetter(letter)}
@@ -72,6 +84,7 @@ function Board () {
     }
 
     const handleClick = (letter) => {
+        console.log(keyClasses);
         if(!gameActive) {
             return false;
         }
@@ -177,6 +190,9 @@ function Board () {
 
         currentRow.forEach(function callback(value, index) {
             oldTileClasses[tileIndex] = 'grey';
+
+            let letterKey = wordLetters[i].toUpperCase();
+
             if(answerLetters.includes(wordLetters[i])) {
                 oldTileClasses[tileIndex] = 'orange';
             }
@@ -188,6 +204,8 @@ function Board () {
             tileIndex = tileIndex + 1;
         });
         setTileClasses(oldTileClasses);
+        console.log(keyClasses, '<k>ey classes');
+        setKeyClasses(keyClasses);
 
         //check if word is solved
         if(correctTiles === 5) {
@@ -289,6 +307,13 @@ function Board () {
                     {renderTile(23)}
                     {renderTile(24)}
                 </div>
+                <div className="tiles-word">
+                    {renderTile(25)}
+                    {renderTile(26)}
+                    {renderTile(27)}
+                    {renderTile(28)}
+                    {renderTile(29)}
+                </div>
             </div>
             <div className="keyboard">
                 <div className="keyboard-row">
@@ -343,8 +368,22 @@ function Letter(props) {
 function EnterKey(props) {
     return (
         <button className={"keyboard-row_letter " + props.class} onClick={props.onClick}>
-            <svg width="24px" height="24px" color="#fff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg width="24px" height="24px" fill="#fff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M19,6a1,1,0,0,0-1,1v4a1,1,0,0,1-1,1H7.41l1.3-1.29A1,1,0,0,0,7.29,9.29l-3,3a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l3,3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L7.41,14H17a3,3,0,0,0,3-3V7A1,1,0,0,0,19,6Z"/>
+            </svg>
+        </button>
+    );
+}
+
+function DeleteKey(props) {
+    return (
+        <button className={"keyboard-row_letter " + props.class} onClick={props.onClick}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                 className="bi bi-backspace" viewBox="0 0 16 16">
+                <path
+                    d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
+                <path
+                    d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
             </svg>
         </button>
     );

@@ -7,14 +7,14 @@
 }
 
 .game {
-
+  height: 100vh;
 }
 
 .board {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   box-sizing: border-box;
   position: relative;
   height: 100%;
@@ -22,14 +22,25 @@
 
 .game-header {
   width: 100%;
+  height: 6rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   background: #1d1d20;
+  &_box {
+    display: flex;
+  }
+  &_box.left {
+    min-width: 9.8rem;
+  }
+  &_box.right {
+    button {
+      margin: 1rem 0rem 1rem 0;
+    }
+  }
 }
 
 .tiles {
-  margin-top: 4rem;
-  margin-bottom: 4rem;
+
 }
 
 .tiles-word {
@@ -103,7 +114,7 @@
 }
 
 .keyboard-row_letter {
-  width: 3.7rem;
+  width: 4rem;
   height: 5.8rem;
   cursor: pointer;
   margin: 0.2rem;
@@ -124,4 +135,16 @@
 
 .keyboard-row_letter.big {
   width: 4rem;
+}
+
+.keyboard-row_letter.correct {
+  background: limegreen;
+}
+
+.keyboard-row_letter.found {
+  background: #d3952a;
+}
+
+.keyboard-row_letter.wrong {
+  background: #919191;
 }
